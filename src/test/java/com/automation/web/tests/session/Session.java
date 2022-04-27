@@ -8,25 +8,18 @@ import org.testng.annotations.*;
 public abstract class Session {
     protected Driver driver;
     protected HomePage homePage;
-    protected String email;
-    protected String password;
 
     @Parameters({"browser", "url"})
-    @BeforeClass
+    @BeforeMethod
     public void bootstrap(String browser, String url){
         driver = new Driver(browser);
         homePage = new HomePage(driver.getDriver(), url);
-        //this.createAccount();
     }
 
-    protected void createAccount(){
-        this.password = RandomString.getAlphaNumericString(20);
-        this.email = this.password + "@gmail.com";
-        homePage.createAccount(this.email, this.password);
-    }
+    public void createAccount(){
+        String password = RandomString.getAlphaNumericString(20);
+        String email = password + "@gmail.com";
+        homePage.createAccount(email, password);
 
-    protected void checkUserIsLogged(){
-        homePage.usernameExists();
     }
-
 }

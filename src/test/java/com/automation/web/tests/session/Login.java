@@ -9,29 +9,21 @@ import org.testng.annotations.Test;
 
 public class Login extends Session{
 
+
     /*@BeforeMethod
-    @Override
-    public void createAccount(){
-        //super.createAccount();
-    }
-    @Test
-    public void ex(){
-        super.createAccount();
-    }*/
-    @BeforeMethod
-    @Override
     public void checkUserIsLogged(){
         try {
-            super.checkUserIsLogged();
-            throw new Exception("A user is already logged in");
+            if (homePage.usernameExists()) {
+                throw new Exception("A user is already logged in");
+            }
         }
         catch (Exception ignore){}
-    }
+    }*/
 
     @Test(dataProvider = "login-users", dataProviderClass = DP.class)
     public void login(String email, String password, boolean expected){
-        boolean result = homePage.login(email, password);
-        Assert.assertEquals(result, expected, "An error occured in the log in!");
+        homePage.login(email, password);
+        Assert.assertEquals(homePage.usernameExists(), expected, "An error occured in the log in!");
     }
 
     @AfterMethod
@@ -40,5 +32,6 @@ public class Login extends Session{
             homePage.logout();
         }
         catch (Exception ignore){}
+        homePage.closeDriver();
     }
 }

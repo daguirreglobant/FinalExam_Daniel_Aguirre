@@ -7,6 +7,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+
 public class HomePage extends BasePage{
     @FindBy(id = "global-user-trigger")
     WebElement globalAccount;
@@ -32,7 +35,7 @@ public class HomePage extends BasePage{
     @FindBy(css = "a[tref='/members/v3_1/modifyAccount']")
     WebElement modifyAccount;
 
-    @FindBy(css="input[type='tel']")
+    @FindBy(css=".input-wrapper input[name='current-password']")
     WebElement cancelAccountRef;
 
     @FindBy(css = "button[type='submit']")
@@ -60,27 +63,30 @@ public class HomePage extends BasePage{
         PageFactory.initElements(driver, this);
     }
 
-    public boolean login(String email, String password){
+    public void login(String email, String password){
         this.globalAccount.click();
         this.loginRef.click();
         driver.switchTo().frame("disneyid-iframe");
         this.emailInput.sendKeys(email);
         this.passwordInput.sendKeys(password);
         this.loginButton.click();
-        try{
-            this.getWait(5).until(ExpectedConditions.elementToBeClickable(this.globalAccount));
-            this.globalAccount.click();
-            return this.usernameExists();
-        }
-        catch (Exception e){
-            return false;
-        }
+
     }
 
-    public boolean logout(){
+    public void logout(){
         this.globalAccount.click();
         this.logoutButton.click();
-        return !this.usernameExists();
+        try
+        {
+            Thread.sleep(1000);
+        }
+        catch(InterruptedException ex)
+        {
+            Thread.currentThread().interrupt();
+        }
+        //this.getWait().until(ExpectedConditions.elementToBeClickable(this.globalAccount));
+        //this.globalAccount.click();
+        //return !this.usernameExists();
     }
 
     public boolean cancelAccount(){
@@ -88,20 +94,18 @@ public class HomePage extends BasePage{
         this.globalAccount.click();
         this.modifyAccount.click();
         driver.switchTo().frame("disneyid-iframe");
-        this.getWait().until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[type='tel']")));
-        WebElement selector = driver.findElement(By.cssSelector("input[type='tel']"));
-        selector.sendKeys("2345903");
-        //System.out.println(this.updateYourAccount.getText());
-        //this.getJs().executeScript("window.scrollBy(0,document.body.scrollHeight)");
-        //this.cancelAccountRef.click();
-        return false;
-        /*try{
+        this.getWait().until(ExpectedConditions.elementToBeClickable(this.updateYourAccount));
+        //this is not working, I tried multiple approaches but none of them worked.
+        //this.getJs().executeScript("window.scrollBy(0,document.body.height)");
+        //this.getJs().executeScript("arguments[0].scrollIntoView(true);", this.cancelAccountRef);
+        try{
+            this.cancelAccountRef.click();
             this.confirmCancelation.click();
             return true;
         }
-        catch (Exception e){
+        catch (Exception ignore){
             return false;
-        }*/
+        }
     }
 
     public void createAccount(String email, String password){
@@ -123,6 +127,17 @@ public class HomePage extends BasePage{
     }
 
     public boolean usernameExists(){
-        return this.userName.getText().length() > 0 ? true : false;
+        try {
+            this.getWait(5).until(ExpectedConditions.elementToBeClickable(this.globalAccount));
+            this.globalAccount.click();
+            return this.userName.getText().length() > 0 ? true : false;
+        }
+        catch (Exception ignore){
+            return false;
+        }
+    }
+
+    public void closeDriver(){
+        this.driver.close();
     }
 }

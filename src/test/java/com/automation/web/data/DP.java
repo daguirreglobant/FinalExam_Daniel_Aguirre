@@ -6,7 +6,7 @@ public class DP {
 
     @DataProvider(name = "login-users")
     public Object[][] loginExamples(){
-        Object [][] logins = {{"example@gmail.com","ajdsdo", false}};
+        Object [][] logins = {{"ex1754@gmail.com", "password123", true},{"example@gmail.com","ajdsdo", false},};
         return logins;
     }
 

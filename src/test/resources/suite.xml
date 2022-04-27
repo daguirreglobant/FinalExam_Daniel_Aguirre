@@ -7,7 +7,8 @@
         <parameter name="browser" value="chrome" />
         <parameter name="url" value="https://www.espnqa.com/?src=com&amp;_adblock=true&amp;espn=cloud" />
         <classes>
-            <class name="com.automation.web.tests.account.DeleteAccount" />
+            <class name="com.automation.web.tests.session.Login" />
+            <class name="com.automation.web.tests.session.Logout" />
         </classes>
     </test>
 </suite>

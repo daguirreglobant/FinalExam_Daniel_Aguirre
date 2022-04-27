@@ -1,21 +1,25 @@
 package com.automation.web.tests.session;
 
+import com.automation.web.helpers.RandomString;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class Logout extends Session{
     @BeforeMethod
-    public void createNewAccount(){
+    @Override
+    public void createAccount(){
         super.createAccount();
     }
 
-
     @BeforeMethod
-    @Override
     public void checkUserIsLogged(){
         try {
-            super.checkUserIsLogged();
+            boolean isLogged = homePage.usernameExists();
+            if (!isLogged){
+                throw new Exception("There is no user logged in");
+            }
         }
         catch (Exception e){
             System.out.println("There is no user logged in");
@@ -24,7 +28,13 @@ public class Logout extends Session{
 
     @Test
     public void logOut(){
-        boolean result = homePage.logout();
-        Assert.assertEquals(true, result);
+        homePage.logout();
+        boolean isLoggedOut = !homePage.usernameExists();
+        Assert.assertEquals(isLoggedOut, true);
+    }
+
+    @BeforeMethod
+    public void close(){
+        homePage.closeDriver();
     }
 }
