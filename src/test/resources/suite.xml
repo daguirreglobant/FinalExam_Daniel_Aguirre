@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="example test suite" verbose="1">
+
+
+    <test name="HomePage">
+        <parameter name="browser" value="chrome" />
+        <parameter name="url" value="https://www.espnqa.com/?src=com&amp;_adblock=true&amp;espn=cloud" />
+        <classes>
+            <class name="com.automation.web.tests.account.DeleteAccount" />
+        </classes>
+    </test>
+</suite>
