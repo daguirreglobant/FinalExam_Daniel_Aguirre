@@ -9,6 +9,7 @@
         <classes>
             <class name="com.automation.web.tests.session.Login" />
             <class name="com.automation.web.tests.session.Logout" />
+            <class name="com.automation.web.tests.account.DeleteAccount" />
         </classes>
     </test>
 </suite>
